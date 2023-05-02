@@ -1,5 +1,5 @@
 class TimeMap {
-    map<string,vector<pair<string,int>>> mp;
+    unordered_map<string,vector<pair<string,int>>> mp;
 public:
     TimeMap() {
         mp.clear();
