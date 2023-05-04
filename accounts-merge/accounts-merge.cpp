@@ -44,15 +44,15 @@ class Solution {
         }
 
         unordered_map<int, set<string>> id_to_mails;
-        for(auto mail : mail_to_id){
+        for(auto& mail : mail_to_id){
             id_to_mails[findGroup(mail.second)].insert(mail.first);
         }
 
         vector<vector<string>> ans;
-        for(auto ids : id_to_mails){
+        for(auto& ids : id_to_mails){
             vector<string> temp;
             temp.push_back(accounts[ids.first][0]);
-            for(auto mail : ids.second){
+            for(auto& mail : ids.second){
                 temp.push_back(mail);
             }
             ans.push_back(temp);
