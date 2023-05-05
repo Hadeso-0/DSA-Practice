@@ -16,7 +16,7 @@ class Trie{
             this->addWord(word);
         }
     }
-    void addWord(string s){
+    void addWord(string& s){
         TrieNode* rt = root;
         for(int i=0; i<s.size(); i++){
             if(rt->next[s[i]-'a'] == NULL){
