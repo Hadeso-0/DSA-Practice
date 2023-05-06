@@ -10,6 +10,7 @@ class Solution {
     }
 public:
     int numSubseq(vector<int>& nums, int target) {
+        ios_base::sync_with_stdio(false), cin.tie(nullptr);
         sort(nums.begin(),nums.end());
         int n = nums.size();
         int ans = 0;
