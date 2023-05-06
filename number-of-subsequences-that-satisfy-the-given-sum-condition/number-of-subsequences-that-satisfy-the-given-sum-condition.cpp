@@ -13,27 +13,19 @@ public:
         sort(nums.begin(),nums.end());
         int n = nums.size();
         int ans = 0;
-        for(auto x : nums) cout<<x<<" ";
-        cout<<endl;
-        for(int i=0; i<n; i++){
-            if(2*nums[i] <= target) ans++;
-            else break;
-            int lb = upper_bound(nums.begin()+i+1, nums.end(), target-nums[i]) - nums.begin();          
-            int x;
-            if(lb == n){
-                // possible for all
-                x = (binPow(2, n-i-1)-1)%mod;
-                cout<<i<<" possible for all combinations "<<x<<endl;
+        
+        vector<int> preCompPow = {1};
+        for(int i=1; i<=n; i++){
+            preCompPow.push_back(binPow(2, i)%mod);
+        }
+
+        int l = 0; int r = n-1;
+        while(l<=r){
+            if(nums[l] + nums[r] > target) r--;
+            else{    
+                ans = (ans + preCompPow[r-l])%mod;
+                l++;
             }
-            else{
-                if(nums[i] + nums[lb] > target) lb--;
-                if(i != lb)
-                    x = (binPow(2,lb-i)-1)%mod;
-                else
-                    x = 0 ;
-                cout<<i<<" "<<nums[i]<<" "<<nums[lb]<<" "<<x<<endl;
-            }
-            ans = (ans + x)%mod;
         }
         return ans;
     }
