@@ -1,13 +1,13 @@
 class Solution {
     int mod = 1e9+7;
-    long long binPow(int x, int p){
-        if(p==0) return 1;
-        if(p==1 || x==1) return x;
-        int pw = binPow(x,p/2)%mod;
+    // long long binPow(int x, int p){
+    //     if(p==0) return 1;
+    //     if(p==1 || x==1) return x;
+    //     int pw = binPow(x,p/2)%mod;
         
-        if(p%2) return (x*(pw*(pw*1ll)%mod)%mod)%mod;
-        else return (pw*(pw*1ll)%mod)%mod;
-    }
+    //     if(p%2) return (x*(pw*(pw*1ll)%mod)%mod)%mod;
+    //     else return (pw*(pw*1ll)%mod)%mod;
+    // }
 public:
     int numSubseq(vector<int>& nums, int target) {
         ios_base::sync_with_stdio(false), cin.tie(nullptr);
@@ -17,7 +17,7 @@ public:
         
         vector<int> preCompPow = {1};
         for(int i=1; i<=n; i++){
-            preCompPow.push_back(binPow(2, i)%mod);
+            preCompPow.push_back((preCompPow[i-1]*2)%mod);
         }
 
         int l = 0; int r = n-1;
