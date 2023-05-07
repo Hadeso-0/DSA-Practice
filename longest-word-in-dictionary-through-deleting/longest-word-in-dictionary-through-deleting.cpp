@@ -1,5 +1,5 @@
 class Solution {
-    bool lcs(string s, string target){
+    bool lcs(string& s, string& target){
         int n = s.size();
         int m = target.size();
         int i,j;
