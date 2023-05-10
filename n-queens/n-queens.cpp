@@ -4,9 +4,8 @@ class Solution {
     unordered_map<int,bool> mapDg2;
     
     bool isPossible(int r, int c){
-        if(mapRow.find(r) != mapRow.end()) return false;
-        if(mapDg1.find(r-c) != mapDg1.end()) return false;
-        if(mapDg2.find(r+c) != mapDg2.end()) return false;
+        if(mapRow[r] || mapDg1[r-c] || mapDg2[r+c]) 
+            return false;
         return true;
     }
     void pushAns(vector<vector<char>>& board, vector<vector<string>>& ans, int n){
@@ -27,16 +26,12 @@ class Solution {
         for(int r= 0; r<n; r++){
             if(isPossible(r,col)){
                 board[r][col] = 'Q';
-                mapRow[r] = true;
-                mapDg1[r-col] = true;
-                mapDg2[r+col] = true;
+                mapRow[r] = mapDg1[r-col] = mapDg2[r+col] = true;
 
                 solve(col+1, board, n, ans);
 
                 board[r][col] = '.';
-                mapRow.erase(r);
-                mapDg1.erase(r-col);
-                mapDg2.erase(r+col);
+                mapRow[r] = mapDg1[r-col] = mapDg2[r+col] = false;
             }   
         }
 
