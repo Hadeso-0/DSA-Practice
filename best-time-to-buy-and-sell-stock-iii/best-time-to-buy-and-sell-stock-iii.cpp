@@ -32,7 +32,28 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int> (3, -1)));
-        return solve(0,1,2,prices,dp);
+        // vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int> (3, -1)));
+        // return solve(0,1,2,prices,dp);
+
+        vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int> (3, 0)));
+        for(int idx=n-1; idx>=0; idx--){
+            for(int buy = 0; buy<=1; buy++){
+                for(int limit = 1; limit <= 2; limit++){
+                    if(buy){
+                        // I can either buy the stock or skip
+                        int bought = dp[idx+1][0][limit] - prices[idx];
+                        int skipped = dp[idx+1][1][limit];
+                        dp[idx][buy][limit] = max(bought, skipped);
+                    }
+                    else{
+                        // I can either sell the stock or skip
+                        int sold = dp[idx+1][1][limit-1] + prices[idx];
+                        int skipped = dp[idx+1][0][limit];
+                        dp[idx][buy][limit] = max(sold, skipped);
+                    }   
+                }
+            }
+        }
+        return dp[0][1][2];
     }
 };
