@@ -21,12 +21,22 @@ public:
             slow = slow->next;
         }
 
-        int ans = 0;
+        ListNode* prv = NULL;
+        ListNode* tmp;
         while(slow != NULL){
-            ans = max(ans, (slow->val + st.top()));
-            st.pop();
+            tmp = slow->next;
+            slow->next = prv;
+            prv = slow;
+            slow = tmp;
+        } 
+        slow = head;
+        int ans = 0;
+        while(prv != NULL){
+            ans = max(ans, (slow->val + prv->val));
             slow = slow->next;
+            prv = prv->next;
         }
         return ans;
+    
     }
 };
