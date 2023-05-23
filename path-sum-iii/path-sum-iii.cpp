@@ -10,20 +10,37 @@
  * };
  */
 class Solution {
-    int pathSumFrmHere(TreeNode* root, long long target){
-        if(root == NULL) return 0;
+    // int pathSumFrmHere(TreeNode* root, long long target){
+    //     if(root == NULL) return 0;
 
-        int ans = 0;
-        if((root->val)*1ll == target) ++ans;
-        long long newTarget = target - (root->val)*1ll;
-        ans += pathSumFrmHere(root->left, newTarget);
-        ans += pathSumFrmHere(root->right, newTarget);
+    //     int ans = 0;
+    //     if((root->val)*1ll == target) ++ans;
+    //     long long newTarget = target - (root->val)*1ll;
+    //     ans += pathSumFrmHere(root->left, newTarget);
+    //     ans += pathSumFrmHere(root->right, newTarget);
 
+    //     return ans;
+    // }
+    int solve(TreeNode* root, long long curSum,  int target, map<long long , int>& mp){
+        if(root == NULL){
+            return 0;
+        } 
+        curSum += (root->val)*1ll;
+        int ans = mp[curSum - (target*1ll)];
+        ++mp[curSum];
+
+        ans += solve(root->left, curSum, target, mp);
+        ans += solve(root->right, curSum, target, mp);
+
+        --mp[curSum];
         return ans;
     }
 public:
     int pathSum(TreeNode* root, int targetSum) {
         if(root == NULL) return 0;
-        return pathSum(root->left, targetSum) + pathSum(root->right, targetSum) + pathSumFrmHere(root, targetSum);
+        map<long long , int> mp;
+        ++mp[0];
+        int ans = solve(root, 0LL, targetSum, mp);
+        return ans;
     }
 };
