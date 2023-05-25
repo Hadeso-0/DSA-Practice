@@ -19,7 +19,21 @@ class Solution {
     }
 public:
     int numTrees(int n) {
-        vector<vector<int>> dp(n+1, vector<int>(n+1, -1));
-        return solve(1, n, dp);
+        vector<vector<int>> dp(n+2, vector<int>(n+2, 0));
+        // return solve(1, n, dp);
+        for(int i=0; i<= n+1; ++i){
+            for(int j=0; j<=i; ++j){
+                dp[i][j] = 1;
+            }
+        }
+
+        for(int i=n; i>=1; --i){
+            for(int j=i+1; j<=n; ++j){
+                for(int k=i; k<=j; ++k){
+                    dp[i][j] = dp[i][j] + (dp[i][k-1]*dp[k+1][j]);
+                }
+            }
+        }
+        return dp[1][n];
     }
 };
