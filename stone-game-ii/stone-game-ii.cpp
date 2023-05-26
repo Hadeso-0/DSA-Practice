@@ -5,13 +5,11 @@ class Solution {
         if(dp[idx][M] != -1) return dp[idx][M];
 
         int ans = INT_MIN;
-        int cur_sum = 0;
         for(int x=1; x<=(2*M); ++x){
             if(idx + x > piles.size()) break;
-            cur_sum += piles[idx+x-1];
             int M_new = max(x, M);
             int temp = solve(piles, suffSum, idx+x, M_new, dp);
-            ans = max(ans, cur_sum+suffSum[idx+x]-temp);
+            ans = max(ans, suffSum[idx]-temp);
         }
         return dp[idx][M] = ans;
     }
