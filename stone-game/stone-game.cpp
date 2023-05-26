@@ -17,12 +17,13 @@ class Solution {
     }
 public:
     bool stoneGame(vector<int>& piles) {
-        int n = piles.size();
-        vector<long long> arr(n+1, 0);
-        for(int i=1; i<=n; ++i){
-            arr[i] = (arr[i-1] + (piles[i-1]*1LL));
-        }
+        // int n = piles.size();
+        // vector<long long> arr(n+1, 0);
+        // for(int i=1; i<=n; ++i){
+        //     arr[i] = (arr[i-1] + (piles[i-1]*1LL));
+        // }
 
-        return solve(n, arr) > arr[n]/2;
+        // return solve(n, arr) > arr[n]/2;
+        return true;
     }
 };
