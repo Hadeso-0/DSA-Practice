@@ -12,10 +12,10 @@ public:
         if(grid[0][0] == 1) return -1;
         if(n == 1) return 1;
         
-        vector<vector<bool>> vis(n, vector<bool>(n,false));
+        // vector<vector<bool>> vis(n, vector<bool>(n,false));
         queue<pair<int,int>> q;
         q.push({0,0});
-        vis[0][0] = 1;
+        // vis[0][0] = 1;
         int ans = 0;
 
         while(!q.empty()){
@@ -28,9 +28,11 @@ public:
                 int y = cell.second;
                 // cout<<x<<" "<<y<<endl;
                 for(int i=0; i<8; i++){
-                    if(isValid(x+dx[i], y+dy[i], grid) && !vis[x+dx[i]][y+dy[i]]){
+                    // if(isValid(x+dx[i], y+dy[i], grid) && !vis[x+dx[i]][y+dy[i]]){
+                    if(isValid(x+dx[i], y+dy[i], grid)){
                         q.push({x+dx[i], y+dy[i]});
-                        vis[x+dx[i]][y+dy[i]] = true;
+                        grid[x+dx[i]][y+dy[i]] = 1;
+                        // vis[x+dx[i]][y+dy[i]] = true;
                         if((x+dx[i] == n-1) && (y+dy[i] == n-1)) return ans+1;
                     }
                 }
