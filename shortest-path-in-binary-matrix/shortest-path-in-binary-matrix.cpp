@@ -6,39 +6,13 @@ class Solution {
             return true;
         return false;
     }
-    void bfs(vector<vector<int>>& grid, vector<vector<int>>& dp, vector<vector<bool>>& vis){
-
-        queue<pair<int,int>> q;
-        q.push({0,0});
-        dp[0][0] = 1;
-        vis[0][0] = 1;
-        
-        while(!q.empty()){
-
-            pair<int,int> cell = q.front();
-            q.pop();
-
-            int x = cell.first;
-            int y = cell.second;
-            cout<<x<<" "<<y<<endl;
-            for(int i=0; i<8; i++){
-                if(isValid(x+dx[i], y+dy[i], grid) && !vis[x+dx[i]][y+dy[i]]){
-                    q.push({x+dx[i], y+dy[i]});
-                    vis[x+dx[i]][y+dy[i]] = true;
-                    dp[x+dx[i]][y+dy[i]] = min(dp[x+dx[i]][y+dy[i]], dp[x][y]+1);
-                }
-            }
-        }
-    }
-
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
         int n = grid.size();
         if(grid[0][0] == 1) return -1;
         if(n == 1) return 1;
-        // vector<vector<int>> dp(n, vector<int>(n,INT_MAX));
+        
         vector<vector<bool>> vis(n, vector<bool>(n,false));
-    
         queue<pair<int,int>> q;
         q.push({0,0});
         vis[0][0] = 1;
@@ -52,7 +26,7 @@ public:
                 
                 int x = cell.first;
                 int y = cell.second;
-                cout<<x<<" "<<y<<endl;
+                // cout<<x<<" "<<y<<endl;
                 for(int i=0; i<8; i++){
                     if(isValid(x+dx[i], y+dy[i], grid) && !vis[x+dx[i]][y+dy[i]]){
                         q.push({x+dx[i], y+dy[i]});
