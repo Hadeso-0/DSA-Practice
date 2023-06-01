@@ -36,9 +36,33 @@ public:
         int n = grid.size();
         if(grid[0][0] == 1) return -1;
         if(n == 1) return 1;
-        vector<vector<int>> dp(n, vector<int>(n,INT_MAX));
+        // vector<vector<int>> dp(n, vector<int>(n,INT_MAX));
         vector<vector<bool>> vis(n, vector<bool>(n,false));
-        bfs(grid, dp, vis);
-        return dp[n-1][n-1]==INT_MAX?-1:dp[n-1][n-1];
+    
+        queue<pair<int,int>> q;
+        q.push({0,0});
+        vis[0][0] = 1;
+        int ans = 0;
+
+        while(!q.empty()){
+            ++ans;
+            for(int i = q.size()-1; i>=0; --i){
+                pair<int,int> cell = q.front();
+                q.pop();
+                
+                int x = cell.first;
+                int y = cell.second;
+                cout<<x<<" "<<y<<endl;
+                for(int i=0; i<8; i++){
+                    if(isValid(x+dx[i], y+dy[i], grid) && !vis[x+dx[i]][y+dy[i]]){
+                        q.push({x+dx[i], y+dy[i]});
+                        vis[x+dx[i]][y+dy[i]] = true;
+                        if((x+dx[i] == n-1) && (y+dy[i] == n-1)) return ans+1;
+                    }
+                }
+            }
+        }
+
+        return -1;
     }
 };
