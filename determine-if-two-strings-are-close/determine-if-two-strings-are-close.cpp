@@ -1,22 +1,23 @@
 class Solution {
 public:
     bool closeStrings(string word1, string word2) {
-        if(word1.size() != word2.size()) return false;   
-        vector<int> frq1(26,0);
-        vector<int> frq2(26,0);
-        for(int i=0; i<word1.size(); ++i){
-            ++frq1[word1[i]-'a'];
-            ++frq2[word2[i]-'a'];
+        int index;
+        int n = word2.size(), m =word1.size();
+        if(n!=m) return false;
+        vector<int> f1(26,0), f2(26,0);
+        for(int i=0; i<n; i++) {
+            f1[word1[i]-'a']++;
         }
-        for(int i=0; i<26; ++i){
-            if((frq1[i]!=0 && frq2[i]==0) || (frq1[i]==0 && frq2[i]!=0)) return false;
+        for(int i=0; i<n; i++) {
+            index = word2[i]-'a';
+            f2[index]++;
+            if (f1[index]==0) return false;
         }
-        unordered_map<int,int> mp;
-        for(int i=0; i<26; ++i){
-            ++mp[frq1[i]];
-            --mp[frq2[i]];
+        sort(f1.begin(), f1.end());
+        sort(f2.begin(), f2.end());
+        for(int i = 0; i < 26; ++i){
+            if (f1[i] != f2[i]) return false;
         }
-        for(auto& x : mp) if(x.second != 0) return false;
         return true;
     }
 };
