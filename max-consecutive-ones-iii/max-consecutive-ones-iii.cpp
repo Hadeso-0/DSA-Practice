@@ -1,26 +1,24 @@
 class Solution {
 public:
     int longestOnes(vector<int>& nums, int k) {
-        int ans = 0;
-        int last_zero = -1;
-        
-        queue<int> log_zeros;
-        log_zeros.push(-1);
-        int i;
-        for(i=0; i<nums.size(); ++i){
-            if(nums[i] == 0){
-                if(k == 0){ 
-                    last_zero = log_zeros.front(); log_zeros.pop();
-                    ans= max(ans, i-last_zero-1);
-                    cout<<last_zero<<"-"<<i-1<<" "<<ans<<endl;
-                }
-                else --k;
-                log_zeros.push(i);
+        int i = 0, j = 0 ;
+        int n = nums.size(), ans = INT_MIN, zero_count = 0 ;
+
+        while(j<n){
+            if(nums[j]==0){
+                ++zero_count;
             }
+            while(zero_count > k){
+                if(nums[i]==0){
+                    --zero_count;
+                }
+                ++i;
+
+            }
+            ans = max(ans,j-i+1) ;
+            ++j;
         }
-        last_zero = log_zeros.front(); log_zeros.pop();
-        ans= max(ans, i-last_zero-1);
-        cout<<last_zero<<"-"<<i-1<<" "<<ans<<endl;
-        return ans;
+
+        return ans ;
     }
 };
