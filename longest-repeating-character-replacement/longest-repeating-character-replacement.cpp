@@ -1,34 +1,27 @@
 class Solution {
-    bool isPossible(int len, string&s , int k){
-        vector<int> frq(26,0);
-        for(int i=0; i<len; ++i){
-            ++frq[s[i]-'A'];
-        }
-        int max_frq = *max_element(frq.begin(), frq.end());
-        if(len - max_frq <= k) return true;
-        for(int i = len; i<s.size(); ++i){
-            ++frq[s[i]-'A']; --frq[s[i-len]-'A'];
-           
-            max_frq = *max_element(frq.begin(), frq.end());
-            if(len - max_frq <= k) return true;
-        }
-        return false;
-    }
+    // bool isPossible(int len, string&s , int k){
+
+    // }
 public:
     int characterReplacement(string s, int k) {
         
-        int l = 1;
-        int r = s.size();
+        int l = 0;
+        int r = 0;
         int ans = 0;
-        while(l <= r){
-            int mid = l +(r-l)/2;
-            if(isPossible(mid, s, k)){
-                ans = mid;
-                l = mid+1;
+        int n = s.size();
+        vector<int> frq(26,0);
+        int max_frq;
+        while(r < n){
+            ++frq[s[r]-'A'];
+            max_frq = *max_element(frq.begin(), frq.end());
+            if((r-l+1 - max_frq) > k){
+                while((r-l+1 - max_frq) > k){
+                    --frq[s[l]-'A']; ++l;
+                    max_frq = *max_element(frq.begin(), frq.end());
+                }
             }
-            else{
-                r = mid-1;
-            }
+            ++r;
+            ans = max(ans, r-l);
         }
         return ans;
     }
