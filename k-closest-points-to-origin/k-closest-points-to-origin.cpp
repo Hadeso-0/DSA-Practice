@@ -1,6 +1,5 @@
 class Solution {
     bool comp(const vector<int>& a, const vector<int>& b){
-        cout<<(a[0]*1LL*a[0] + a[1]*1LL*a[1])<<" "<<(b[0]*1LL*b[0] + b[1]*1LL*b[1]);
         return (a[0]*1LL*a[0] + a[1]*1LL*a[1]) < (b[0]*1LL*b[0] + b[1]*1LL*b[1]);
     }
     long long dis(const vector<int>& a){
@@ -8,23 +7,23 @@ class Solution {
     }
 public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        priority_queue<pair<long long,vector<int>>> pq;
+        priority_queue<pair<long long,int>> pq;
         int n = points.size();
         for(int i=0; i<n; ++i){
             if(pq.size() < k){
-                pq.push({dis(points[i]), points[i]});
+                pq.push({dis(points[i]),i});
             }
             else{
-                if(comp(points[i],(pq.top()).second)){
+                if(comp(points[i], points[(pq.top()).second])){
                     cout<<i<<" ";
                     pq.pop();
-                    pq.push({dis(points[i]), points[i]});
+                    pq.push({dis(points[i]), i});
                 }
             }
         }
         vector<vector<int>> ans;
         while(!pq.empty()){ 
-            ans.push_back((pq.top()).second);
+            ans.push_back(points[(pq.top()).second]);
             pq.pop();
         }
         return ans;
