@@ -7,8 +7,9 @@ public:
     }
     
     void change(int index, int number) {
-        if(index_num.find(index) != index_num.end()){
-            int old_num = (*index_num.find(index)).second;
+        auto f = index_num.find(index);
+        if(f != index_num.end()){
+            int old_num = (*f).second;
             num_index[old_num].erase(index);
         }
         num_index[number].insert(index);
