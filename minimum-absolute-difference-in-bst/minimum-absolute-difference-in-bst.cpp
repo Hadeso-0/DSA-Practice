@@ -10,26 +10,22 @@
  * };
  */
 class Solution {
-    void init_set(TreeNode* root, set<int>& st){
+    void init_set(TreeNode* root, vector<int>& vec){
         if(root == NULL) return;
 
-        st.insert(root->val);
-        init_set(root->left, st);
-        init_set(root->right, st);
+        vec.push_back(root->val);
+        init_set(root->left, vec);
+        init_set(root->right, vec);
     }
 public:
     int getMinimumDifference(TreeNode* root) {
-        set<int> st;
-        init_set(root, st);
+        vector<int> vec;
+        init_set(root, vec);
         int min_diff  = INT_MAX;
 
-        set<int>::iterator it = st.begin();
-        while(it != st.end()){
-            int x = *it;
-            ++it;
-            if(it == st.end()) break;
-            int y = *it;
-            min_diff = min(min_diff, y-x);
+        sort(vec.begin(), vec.end());
+        for(int i=1; i<vec.size(); ++i){
+            min_diff = min(min_diff, vec[i]-vec[i-1]);
         }
         return min_diff;
     }
