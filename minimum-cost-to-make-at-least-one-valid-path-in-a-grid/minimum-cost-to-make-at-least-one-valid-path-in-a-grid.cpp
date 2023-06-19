@@ -1,7 +1,7 @@
 class Comp{
     public:
-    bool operator()(const pair<int,int>& a, pair<int,int>& b){
-        return a.first > b.first;
+    bool operator()(const vector<int>& a, vector<int>& b){
+        return a[2] > b[2];
     }
 };
 class Solution {
@@ -14,56 +14,48 @@ public:
     int minCost(vector<vector<int>>& grid) {    
         int n = grid.size();
         int m = grid[0].size();
-        
-        vector<vector<pair<int,int>>> gr(n*m);
-        for(int i=0; i<n; ++i){
-            for(int j=0; j<m; ++j){
-                // cout<<i*m+j<<" ";
-                for(int d=1; d<=4; ++d){
-                    int i_n = i+dx[d]; int j_n = j+dy[d];
-                    if((i_n < n) && (i_n>=0) && (j_n < m) && (j_n>=0)){
-                        int wt = (d == grid[i][j]) ? 0 : 1;
-                        gr[i*m + j].push_back({wt, i_n*m + j_n});
-                    }
 
-                }
-            }
-            // cout<<endl;
-        }
-
-        // for(int i=0; i<n*m; ++i){
-        //     cout<<i<<" --> ";
-        //     for(auto& p : gr[i]){
-        //         cout<<"("<<p.first<<","<<p.second<<"), ";
-        //     }
-        //     cout<<endl;
-        // }
-
-        vector<int> dis(n*m, INT_MAX);
+        vector<vector<int>> dis(n, vector<int> (m, INT_MAX));
         int des = (n*m) - 1;
         int ans = INT_MAX;
-        priority_queue<pair<int,int>, vector<pair<int,int>>, Comp> q; // cost, src
-        q.push({0, 0});
-        dis[0] = 0;
+
+        priority_queue<vector<int>, vector<vector<int>>, Comp> q; // i,j,cost
+        q.push({0, 0, 0});
+        dis[0][0] = 0;
 
         while(!q.empty()){
-            int cst = (q.top()).first;
-            int src = (q.top()).second;
+            int i = (q.top())[0];
+            int j = (q.top())[1];
+            int cst = (q.top())[2];
             q.pop();
             
-            // cout<<"("<<src<<","<<cst<<") -> ";
-            if(src == des){
+            // cout<<"("<<i<<","<<j<<","<<cst<<") -> ";
+            if((i == n-1) && (j == m-1)){
                 return cst;
             }
-            for(auto& to : gr[src]){
-                int cst_to = (cst + to.first);
-                if(dis[to.second] > cst_to){
-                    q.push({cst_to, to.second});
-                    dis[to.second] = cst_to;
+            // for(auto& to : gr[src]){
+            //     int cst_to = (cst + to.first);
+            //     if(dis[to.second] > cst_to){
+            //         q.push({cst_to, to.second});
+            //         dis[to.second] = cst_to;
+            //     }
+            // }
+
+            for(int d=1; d<=4; ++d){
+                int i_n = i+dx[d]; int j_n = j+dy[d];
+                
+                if((i_n < n) && (i_n>=0) && (j_n < m) && (j_n>=0)){
+                    int wt = (d == grid[i][j]) ? 0 : 1;
+                    int will_take = cst + wt;
+                    if(dis[i_n][j_n] > will_take){
+                        q.push({i_n, j_n, will_take});
+                        dis[i_n][j_n] = will_take;
+                    }
+                
                 }
             }
         }
 
-        return 0;
+        return -1;
     }
 };
