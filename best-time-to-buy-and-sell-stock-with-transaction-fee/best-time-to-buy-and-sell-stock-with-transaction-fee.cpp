@@ -11,8 +11,8 @@ public:
         
         for(int i = n-1; i>=0; i--){
             int temp = sell;
-            sell = max(buy + prices[i] - fee , sell);
-            buy  = max(temp - prices[i] , buy);
+            sell = max(buy + prices[i] , sell);
+            buy  = max(temp - prices[i] - fee , buy);
         }
         return buy;
     }
