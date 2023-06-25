@@ -1,16 +1,14 @@
 class Solution {
 public:
     int maximumNumberOfStringPairs(vector<string>& words) {
-        unordered_map<string, int> mp;
         int ans = 0;
-        for(auto s : words){
-            if(mp.find(s) != mp.end()){ 
-                ++ans;
-                --mp[s];
-                if(mp[s] == 0) mp.erase(s);
+        int n = words.size();
+        for(int i=0; i<n; ++i){
+            for(int j=i+1; j<n; ++j){
+                if(words[i][0] == words[j][1] && words[i][1] == words[j][0]){
+                    ++ans;
+                }
             }
-            reverse(s.begin(), s.end());
-            ++mp[s];
         }
         return ans;
     }
