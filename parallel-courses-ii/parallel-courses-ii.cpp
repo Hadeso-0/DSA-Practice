@@ -1,40 +1,64 @@
 class Solution {
-public:
-    int minNumberOfSemesters(int n, vector<vector<int>>& rels, int k) {
-        vector<int> gr(n, 0);
-        for(auto& rel : rels){
-            int pre = rel[0]-1;
-            int crs = rel[1]-1;
-
-            gr[crs] |= (1<<pre);
+    vector<vector<int> > adj;
+    int n;
+    int k;
+    vector<int> dp;
+    int solve(int mask)
+    {
+        if(mask==((1<<n)-1)){
+            return 0;
         }
-        vector<int> prereqs(1<<n, 0);
-        for(int i=0; i<(1<<n); ++i){
-            for(int j=0; j<n; ++j){
-                if(i& (1<<j)){
-                    prereqs[i] |= gr[j];
-                }
+        if(dp[mask]!=-1)  return dp[mask];
+
+        vector<int> indeg(n,0);
+
+        for(int i=0; i<n; i++){
+            if(mask & (1<<i)) continue;
+            
+            for(auto it: adj[i]){
+                indeg[it]++;
             }
         }
+        int temp=0;  // For a mask of all nodes with 0-indegree
+        for(int i=0; i<n; i++){
 
-        // dp[i]: minimum number of semesters of mask i, 
-        // the set bits are courses that have not been taken
-        vector<int> dp(1 << n, n + 1);
-        dp[0] = 0;
-        for (int i = 1; i < (1 << n); ++i) {
-            // iterate all submask of mask i, and this mask is the mask of last semester
-            for (int j = i; j; j = (j - 1) & i) {
-                if (__builtin_popcount(j) > k) {
+            if(indeg[i]==0 && !(mask & (1<<i))){
+                temp = temp|(1<<i);
+            }
+        }
+        int j = temp;
+        int cnt = __builtin_popcount(j);  // count of nodes with 0-indegree
+
+        int ans = n+1;  // ans will be 'n' in the worst case, so take (n+1) as infinity 
+        if(cnt > k){
+            for( ; j ; j=(j-1)&temp )  // iterate through all submasks of temp
+            {
+                cnt = __builtin_popcount(j);  
+                if(cnt!=k)   
                     continue;
-                }
-
-                int already_taken = i ^ ((1 << n) - 1);
-                if ((already_taken & prereqs[j]) == prereqs[j]) {
-                    dp[i] = min(dp[i], dp[i ^ j] + 1);
-                }
+                ans = min( ans, 1+solve(mask|j));                   
             }
         }
-
-        return dp[(1 << n) - 1];
+        else
+        {
+            ans = min( ans, 1+solve(mask|j));
+        }
+        return dp[mask] = ans;
+    }
+    
+    public:
+    int minNumberOfSemesters(int N, vector<vector<int>>& d, int K) {
+        n=N;
+        k=K;
+        dp.assign(1<<n,-1);
+        adj.clear();
+        adj.resize(n);
+        for(int i=0; i<d.size(); i++)
+        {
+            d[i][0]--;
+            d[i][1]--;
+            adj[d[i][0]].push_back(d[i][1]);
+        }
+        return solve(0);
     }
 };
