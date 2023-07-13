@@ -27,6 +27,8 @@ public:
         
         vector<int> workers(k, 0);
         int ans = INT_MAX;
+        
+        sort(jobs.begin(), jobs.end());
         solve(0, workers, ans, jobs);
         return ans;
     }
