@@ -1,35 +1,32 @@
 class Solution {
-    
-    void solve(int idx, vector<int>& workers , int& ans, vector<int>& jobs){
-        if(idx == jobs.size()){
-            int temp = *max_element(workers.begin(), workers.end());
-            ans = min(ans, temp);
+    int ans = INT_MAX;
+    void solve(int i, int k, int n, vector<int>&jobs, vector<int> worker){
+        if(i == n){
+            int temp = *max_element(worker.begin(),worker.end());
+            ans = min(ans,temp);
             return;
         }
-        set<int> seen;
-        for(int i=0; i<workers.size(); ++i){
-            // giving this bag's cookies to ith child
-            // cout<<i<<" "<<cookies[idx]<<endl;
-            if(seen.find(workers[i]) != seen.end()) continue;
-            if(workers[i] + jobs[idx] >= ans) continue;
-            
-            seen.insert(workers[i]);
 
-            workers[i] += jobs[idx];
-            solve(idx+1, workers, ans, jobs);
-            workers[i] -= jobs[idx];
+        if(*max_element(worker.begin(),worker.end()) >= ans) return;
+
+        for(int j = 0; j < k; j++){
+            if((j > 0) && (worker[j] >= worker[j - 1]))continue;
+            worker[j] += jobs[i];
+            solve( i+1, k, n, jobs, worker);
+            worker[j] -= jobs[i];
         }
+        return ;
     }
-public:
+
+    public:
     int minimumTimeRequired(vector<int>& jobs, int k) {
+        sort(jobs.begin(),jobs.end(),greater<int>());
         
-        if (k == jobs.size()) return *max_element(begin(jobs), end(jobs));       
+        int n = jobs.size();
+        if(n == k)return jobs[0];
         
-        vector<int> workers(k, 0);
-        int ans = INT_MAX;
-        
-        sort(jobs.begin(), jobs.end());
-        solve(0, workers, ans, jobs);
+        vector<int> worker(k, 0);
+        solve( 0, k, n, jobs, worker);
         return ans;
     }
 };
