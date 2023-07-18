@@ -1,6 +1,6 @@
 class FreqStack {
-    map<int,int> frq;
-    map<int, stack<int>> log;
+    unordered_map<int,int> frq;
+    unordered_map<int, stack<int>> log;
     int max_frq;
 public:
     FreqStack() {
@@ -21,12 +21,12 @@ public:
         log[max_frq].pop();
         --frq[ans];
         
-        while((log[max_frq].empty()) && (max_frq > 0)){
-            --max_frq;
-        }
-        // if(log[max_frq].empty()){
+        // while((log[max_frq].empty()) && (max_frq > 0)){
         //     --max_frq;
         // }
+        if(log[max_frq].empty()){
+            --max_frq;
+        }
 
         return ans;
     }
