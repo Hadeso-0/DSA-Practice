@@ -3,12 +3,13 @@ class Solution {
 public:
     double knightProbability(int n, int k, int row, int column) {
         vector<vector<double>> dp(30, vector<double>(30, 0.0));
+        vector<vector<double>> nex_state(30, vector<double>(30, 0.0));
         dp[row][column] = (double)1;
 
         for(int move = 1; move <= k; ++move){
-            vector<vector<double>> nex_state(30, vector<double>(30, 0.0));
             for(int i=0; i<n; ++i){
                 for(int j=0; j<n; ++j){
+                    nex_state[i][j] = 0.0;
                     for(auto& d : dirs){
                         int i_nex = i + d[0]; int j_nex = j+d[1];
                         if((i_nex >= 0) && (i_nex < n) && (j_nex < n) && (j_nex >= 0)){
@@ -17,7 +18,7 @@ public:
                     }
                 }
             }
-            dp = nex_state;
+            dp.swap(nex_state);
         }
         
         double ans = (double)0;
