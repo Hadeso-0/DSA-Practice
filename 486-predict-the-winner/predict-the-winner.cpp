@@ -12,19 +12,19 @@ class Solution {
 public:
     bool PredictTheWinner(vector<int>& nums) {
         int n = nums.size();
-        vector<int> prefix(n+1,0);
         vector<vector<int>> dp(2, vector<int>(n+1, 0));
         
+        nums.insert(nums.begin(), 0);
         for(int i=0; i<n; ++i){
-            prefix[i+1] = prefix[i] + nums[i];
+            nums[i+1] += nums[i];
         }
-        long sum = prefix[n];
+        long sum = nums[n];
 
         for(int i=n; i>=1; --i){
-            dp[i%2][i] = prefix[i]-prefix[i-1]; 
+            dp[i%2][i] = nums[i]-nums[i-1]; 
             for(int j=i+1; j<=n; ++j){
 
-                int tot = prefix[j] - prefix[i-1];
+                int tot = nums[j] - nums[i-1];
                 dp[i%2][j] = tot - min(dp[(i+1)%2][j], dp[i%2][j-1]);
 
             }
