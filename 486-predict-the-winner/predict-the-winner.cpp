@@ -1,6 +1,6 @@
 class Solution {
     int solve(vector<int>& prefix, int i, int j, vector<vector<int>>& dp){
-        if(i > j) return 0;
+        if(i == j) return prefix[j]-prefix[i-1];
         if(dp[i][j] != -1) return dp[i][j];
         
         int tot = prefix[j] - prefix[i-1];
