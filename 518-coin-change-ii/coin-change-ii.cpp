@@ -22,20 +22,17 @@ public:
         // return hades(amount, coins, 0, dp);
 
         int n = coins.size();
-        vector<vector<int>> dp(amount+1, vector<int>(n+1, 0));
-        for(int i=0; i<=n; ++i){
-            dp[0][i] = 1;
-        }
+        vector<int> dp(amount+1, 0);
+        dp[0] = 1;
 
-        for(int amt = 1; amt <= amount; ++amt){
-            for(int idx = 1; idx<=n; ++idx){
-                dp[amt][idx] = dp[amt][idx-1];
+        for(int idx = 1; idx<=n; ++idx){
+            for(int amt = 1; amt <= amount; ++amt){
                 if(coins[idx-1] <= amt){
-                    dp[amt][idx] += dp[amt-coins[idx-1]][idx];
+                    dp[amt] += dp[amt-coins[idx-1]];
                 }
             }
         }
 
-        return dp[amount][n];
+        return dp[amount];
     }
 };
