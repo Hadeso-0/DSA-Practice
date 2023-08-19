@@ -23,23 +23,25 @@ public:
         // return ans;
         int n = s.size();
         unordered_map<char,int> frq; 
-        unordered_map<char,bool> used;
+        int mask = 0;
 
         stack<int> st;
         for(int i=0; i<n; ++i){
             ++frq[s[i]];
-            used[s[i]] = false;
+            mask = (mask | (1<<(s[i]-'a')));
         } 
 
         for(int i=0; i<n; ++i){
             --frq[s[i]];
-            if(used[s[i]]) continue;
+            if((mask & (1<<(s[i]-'a'))) == 0) continue;
 
             while((!st.empty()) && (s[i] < s[st.top()]) && (frq[s[st.top()]] > 0)){
-                used[s[st.top()]] = false; st.pop();
+                mask = (mask | (1<<(s[st.top()]-'a'))); 
+                st.pop();
             }
 
-            st.push(i); used[s[i]] = true;
+            st.push(i); 
+            mask = (mask ^ (1<<(s[i]-'a')));
         }
 
         string ans = "";
