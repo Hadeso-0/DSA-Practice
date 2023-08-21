@@ -9,7 +9,7 @@ public:
         int ans = 0;
         while(r < n){
             sm += nums[r];
-            while((r-l+1)*1LL*nums[r] > sm + k){
+            while(((r-l+1)*1LL*nums[r] - sm) > k){
                 sm -= nums[l];
                 ++l;
             }
