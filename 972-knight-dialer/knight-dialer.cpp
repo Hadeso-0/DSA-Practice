@@ -11,21 +11,22 @@ public:
     int knightDialer(int n) {
         long long ans = 0;
         
-        vector<vector<int>> dp(n+1, vector<int>(10,0));
+        vector<vector<int>> dp(2, vector<int>(10,0));
         for(int i=0; i<10; ++i){
             dp[1][i] = 1;
         }
 
         for(int i=2; i<=n; ++i){
             for(int j=0; j<10; ++j){
+                dp[i%2][j] = 0;
                 for(auto prev: gr[j]){
-                    dp[i][j] = (dp[i][j] + dp[i-1][prev])%mod;
+                    dp[i%2][j] = (dp[i%2][j] + dp[(i-1)%2][prev])%mod;
                 }
             }
         }
 
         for(int i=0; i<10; ++i){
-            ans = (ans+ dp[n][i])%mod;
+            ans = (ans+ dp[n%2][i])%mod;
         }
         return ans%mod;     
     }
